@@ -98,12 +98,11 @@ class TrafficViolationSubmitter:
             識別出的驗證碼文字
         """
         try:
-            # 圖片預處理
             captcha_image = Image.open(image_path).convert("L")
             captcha_image = captcha_image.filter(ImageFilter.SHARPEN)
             captcha_image = ImageEnhance.Contrast(captcha_image).enhance(2.0)
             
-            # OCR識別
+            # OCR
             captcha_text = pytesseract.image_to_string(
                 captcha_image,
                 config="--psm 6 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
@@ -150,24 +149,25 @@ class TrafficViolationSubmitter:
     def parse_location(self, location: str) -> Tuple[str, str, str]:
         """
         Parse violation location
-        
         Args:
             location: 完整地址
-            
         Returns:
             (區域, 街道, 詳細地址)
         """
         try:
-            cityarea_match = re.search(r"([\u4e00-\u9fa5]{1,3}區)", location)
-            cityarea = cityarea_match.group(1) if cityarea_match else "西屯區"
-            remaining = location.replace(cityarea, "").replace("台中市", "").replace("臺中市", "").strip()
-
-            street_match = re.search(r"(.+?(?:路|街|道|大道|巷|段))", remaining)
-            street = street_match.group(1) if street_match else "其他路段"
-            inputaddress = remaining.replace(street, "").strip() if street else remaining
-            if not inputaddress:
-                inputaddress = "附近"
+            loc = re.sub(r"[\u4e00-\u9fa5]{2,3}市", "", location).strip()
             
+            # 取區
+            cityarea_match = re.search(r"([\u4e00-\u9fa5]{1,3}區)", loc)
+            cityarea = cityarea_match.group(1) if cityarea_match else "西屯區"
+            loc = loc.replace(cityarea, "", 1).strip()
+
+            # 取街道
+            street_match = re.search(r"([\u4e00-\u9fa5A-Za-z0-9\-]+?(?:路|街|道|大道|巷|段))", loc)
+            street = street_match.group(1) if street_match else "其他路段"
+            loc = loc.replace(street, "", 1).strip() if street else loc
+
+            inputaddress = loc if loc else "附近"
             return cityarea, street, inputaddress
         except Exception as e:
             self.logger.warning(f"地點解析失敗：{location}，使用預設值")
@@ -224,7 +224,7 @@ class TrafficViolationSubmitter:
             if not totfilesize_input:
                 return SubmissionResult(
                     success=False,
-                    message="無法找到表單參數"
+                    message="無法找到參數"
                 )
             totfilesize = totfilesize_input["value"]
 
@@ -260,7 +260,11 @@ class TrafficViolationSubmitter:
             form_data = {
                 "totfilesize": totfilesize,
                 "name": user_info.name,
-                "gender": ("1" if user_info.gender == "male" else ("2" if user_info.gender == "female" else "")),
+                "gender": (
+                    "male" if user_info.gender in ["male", "1", "m", "男"] else
+                    "female" if user_info.gender in ["female", "2", "f", "女"] else
+                    ""
+                ),
                 "isforeigner": "taiwan",
                 "sub": user_info.sub,
                 "address": user_info.address,
