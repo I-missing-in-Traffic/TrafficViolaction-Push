@@ -16,8 +16,7 @@ TrafficViolaction-Push/
 │   ├── models.py              # 資料模型
 │   └── exceptions.py          # 自訂例外
 ├── examples/                   # 使用範例
-│   ├── standalone.py          # CLI 範例
-│   └── fastapi_example.py     # FastAPI 範例
+│   └── standalone.py          # CLI 範例
 ├── debug_ocr.py               # OCR 除錯工具
 └── README.md                  # 說明文件
 ```
