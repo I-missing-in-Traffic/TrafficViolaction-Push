@@ -6,11 +6,11 @@ setup(
     description="台中市交通違規檢舉自動化工具",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    author="Your Name",
-    author_email="your.email@example.com",
-    url="https://github.com/yourusername/traffic-violation-reporter",
+    author="kaminzhi",
+    author_email="kamin@kaminzhi.com",
+    url="https://github.com/I-missing-in-Traffic/TrafficViolaction-Push"
     packages=find_packages(),
-    python_requires=">=3.11",
+    python_requires=">=3.9",
     install_requires=[
         "requests>=2.32.4",
         "beautifulsoup4>=4.13.4",
@@ -27,6 +27,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Topic :: Internet :: WWW/HTTP",
