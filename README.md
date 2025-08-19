@@ -6,7 +6,21 @@
 
 - Python 3.11+
 - Tesseract OCR 引擎
-- 網路連線
+
+## 專案結構
+```
+TrafficViolaction-Push/
+├── traffic_violation/          # 核心模組
+│   ├── __init__.py            # 模組初始化
+│   ├── core.py                # 主要功能實作
+│   ├── models.py              # 資料模型
+│   └── exceptions.py          # 自訂例外
+├── examples/                   # 使用範例
+│   ├── standalone.py          # CLI 範例
+│   └── fastapi_example.py     # FastAPI 範例
+├── debug_ocr.py               # OCR 除錯工具
+└── README.md                  # 說明文件
+```
 
 ## 安裝說明
 
@@ -44,28 +58,3 @@ pip install -e .
 ```bash
 uv run python examples/standalone.py
 ```
-
-## 專案結構
-```
-TrafficViolaction-Push/
-├── traffic_violation/          # 核心模組
-│   ├── __init__.py            # 模組初始化
-│   ├── core.py                # 主要功能實作
-│   ├── models.py              # 資料模型
-│   └── exceptions.py          # 自訂例外
-├── examples/                   # 使用範例
-│   ├── standalone.py          # CLI 範例
-│   └── fastapi_example.py     # FastAPI 範例
-├── debug_ocr.py               # OCR 除錯工具
-└── README.md                  # 說明文件
-```
-
-## Run
-```bash
-# 測試 CLI
-uv run python examples/standalone.py
-```
-
-## API 文件
-
-詳細的 API 文件請參考 [API_REFERENCE.md](API_REFERENCE.md)
