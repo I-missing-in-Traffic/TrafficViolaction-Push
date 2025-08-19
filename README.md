@@ -4,7 +4,7 @@
 
 ## 系統需求
 
-- Python 3.11+
+- Python 3.8+
 - Tesseract OCR 引擎
 
 ## 專案結構
